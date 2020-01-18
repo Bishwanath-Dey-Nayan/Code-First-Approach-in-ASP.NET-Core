@@ -1,0 +1,35 @@
+-------------------DBContext Class-------------------------
+namespace CodeFirstMigration.Context  
+{  
+    public class EmployeeDbContext : DbContext  
+    {  
+        public EmployeeDbContext(DbContextOptions options) : base(options)  
+        {  
+        }  
+  
+        DbSet<Employee> Employees { get; set; }  
+    }  
+} 
+
+----------------------Appsetting.json------------------------
+{  
+  "Logging": {  
+    "IncludeScopes": false,  
+    "LogLevel": {  
+      "Default": "Warning"  
+    }  
+  },  
+  "ConnectionStrings": {  
+    "myconn": "server=ABC\\SQLEXPRESS2012; database=EmployeeDB;Trusted_Connection=True;"  
+  }  
+}
+----------------------StartUp.cs------------------------------
+public void ConfigureServices(IServiceCollection services)  
+{  
+    services.AddMvc();  
+    services.AddDbContext<EmployeeDbContext>(item => item.UseSqlServer(Configuration.GetConnectionString("myconn")));  
+}
+
+-------------------Migration command-------------------------
+add-migration MigrationName
+update-database
